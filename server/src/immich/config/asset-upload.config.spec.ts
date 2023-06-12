@@ -49,77 +49,36 @@ describe('assetUploadOption', () => {
       expect(name).toBeUndefined();
     });
 
-    it('should allow images', async () => {
-      const file = { mimetype: 'image/jpeg', originalname: 'test.jpg' } as any;
-      fileFilter(mock.userRequest, file, callback);
-      expect(callback).toHaveBeenCalledWith(null, true);
-    });
-
-    it('should allow videos', async () => {
-      const file = { mimetype: 'video/mp4', originalname: 'test.mp4' } as any;
-      fileFilter(mock.userRequest, file, callback);
-      expect(callback).toHaveBeenCalledWith(null, true);
-    });
-
-    it('should allow webm videos', async () => {
-      const file = { mimetype: 'video/webm', originalname: 'test.webm' } as any;
-      fileFilter(mock.userRequest, file, callback);
-      expect(callback).toHaveBeenCalledWith(null, true);
-    });
-
-    it('should allow .raf recognized', () => {
-      const file = { mimetype: 'image/x-fuji-raf', originalname: 'test.raf' } as any;
-      fileFilter(mock.userRequest, file, callback);
-      expect(callback).toHaveBeenCalledWith(null, true);
-    });
-
-    it('should allow .srw recognized', () => {
-      const file = { mimetype: 'image/x-samsung-srw', originalname: 'test.srw' } as any;
-      fileFilter(mock.userRequest, file, callback);
-      expect(callback).toHaveBeenCalledWith(null, true);
-    });
-
-    it('should allow .wmv videos', () => {
-      const file = { mimetype: 'video/x-ms-wmv', originalname: 'test.wmv' } as any;
-      fileFilter(mock.userRequest, file, callback);
-      expect(callback).toHaveBeenCalledWith(null, true);
-    });
-
-    it('should allow .mkv videos', () => {
-      const file = { mimetype: 'video/x-matroska', originalname: 'test.mkv' } as any;
-      fileFilter(mock.userRequest, file, callback);
-      expect(callback).toHaveBeenCalledWith(null, true);
-    });
-
-    it('should allow .mpg videos', () => {
-      const file = { mimetype: 'video/mpeg', originalname: 'test.mpg' } as any;
-      fileFilter(mock.userRequest, file, callback);
-      expect(callback).toHaveBeenCalledWith(null, true);
-    });
-
-    it('should allow .flv videos', () => {
-      const file = { mimetype: 'video/x-flv', originalname: 'test.flv' } as any;
-      fileFilter(mock.userRequest, file, callback);
-      expect(callback).toHaveBeenCalledWith(null, true);
-    });
-
-    it('should allow .mov videos with video/mov mimetype', () => {
-      const file = { mimetype: 'video/mov', originalname: 'test.mov' } as any;
-      fileFilter(mock.userRequest, file, callback);
-      expect(callback).toHaveBeenCalledWith(null, true);
-    });
-
-    it('should allow .avi videos with video/avi mimetype', () => {
-      const file = { mimetype: 'video/avi', originalname: 'test.avi' } as any;
-      fileFilter(mock.userRequest, file, callback);
-      expect(callback).toHaveBeenCalledWith(null, true);
-    });
-
-    it('should allow .avi videos with video/x-msvideo mimetype', () => {
-      const file = { mimetype: 'video/x-msvideo', originalname: 'test.avi' } as any;
-      fileFilter(mock.userRequest, file, callback);
-      expect(callback).toHaveBeenCalledWith(null, true);
-    });
+    for (const file of [
+      { mimetype: 'image/dng', originalname: 'test.dng' },
+      { mimetype: 'image/gif', originalname: 'test.gif' },
+      { mimetype: 'image/heic', originalname: 'test.heic' },
+      { mimetype: 'image/heif', originalname: 'test.heif' },
+      { mimetype: 'image/jpeg', originalname: 'test.jpeg' },
+      { mimetype: 'image/jpeg', originalname: 'test.jpg' },
+      { mimetype: 'image/png', originalname: 'test.png' },
+      { mimetype: 'image/tiff', originalname: 'test.tiff' },
+      { mimetype: 'image/webp', originalname: 'test.webp' },
+      { mimetype: 'image/x-adobe-dng', originalname: 'test.dng' },
+      { mimetype: 'image/x-fuji-raf', originalname: 'test.raf' },
+      { mimetype: 'image/x-nikon-nef', originalname: 'test.nef' },
+      { mimetype: 'image/x-samsung-srw', originalname: 'test.srw' },
+      { mimetype: 'image/x-sony-arw', originalname: 'test.arw' },
+      { mimetype: 'video/avi', originalname: 'test.avi' },
+      { mimetype: 'video/mov', originalname: 'test.mov' },
+      { mimetype: 'video/mp4', originalname: 'test.mp4' },
+      { mimetype: 'video/mpeg', originalname: 'test.mpg' },
+      { mimetype: 'video/webm', originalname: 'test.webm' },
+      { mimetype: 'video/x-flv', originalname: 'test.flv' },
+      { mimetype: 'video/x-matroska', originalname: 'test.mkv' },
+      { mimetype: 'video/x-ms-wmv', originalname: 'test.wmv' },
+      { mimetype: 'video/x-msvideo', originalname: 'test.avi' }
+    ]) {
+      it(`should allow ${file.originalname} (${file.mimetype})`, async () => {
+        fileFilter(mock.userRequest, file, callback);
+        expect(callback).toHaveBeenCalledWith(null, true);
+      });
+    }
 
     it('should not allow unknown types', async () => {
       const file = { mimetype: 'application/html', originalname: 'test.html' } as any;

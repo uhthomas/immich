@@ -1,8 +1,8 @@
-FROM node:18-alpine3.17 as builder
+FROM node:18-alpine3.18 as builder
 
 WORKDIR /usr/src/app
 
-RUN apk add --update-cache build-base python3 vips-heif vips-dev ffmpeg perl
+RUN apk add --update-cache build-base python3 vips vips-cpp vips-heif vips-magick libraw-dev ffmpeg perl
 
 COPY package.json package-lock.json ./
 
@@ -17,13 +17,13 @@ RUN npm run build
 RUN npm prune --omit=dev --omit=optional
 
 
-FROM node:18-alpine3.17
+FROM node:18-alpine3.18
 
 ENV NODE_ENV=production
 
 WORKDIR /usr/src/app
 
-RUN apk add --no-cache vips-heif vips vips-cpp ffmpeg perl
+RUN apk add --no-cache vips vips-cpp vips-heif vips-magick libraw-dev ffmpeg perl
 
 COPY --from=prod /usr/src/app/node_modules ./node_modules
 COPY --from=prod /usr/src/app/dist ./dist
